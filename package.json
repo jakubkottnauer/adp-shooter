@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build": "browserify src/index.ts -p [ tsify --noImplicitAny ] > build/index.js && open index.html"
+  },
+  "dependencies": {
+    "tsify": "^3.0.3",
+    "typescript": "^2.5.3"
+  },
+  "devDependencies": {
+    "jest": "^21.2.1"
+  }
+}

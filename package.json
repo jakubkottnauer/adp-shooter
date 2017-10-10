@@ -1,8 +1,24 @@
 {
   "scripts": {
-    "build": "browserify src/index.ts -p [ tsify --noImplicitAny ] > build/index.js && open index.html"
+    "build": "browserify src/index.ts -p [ tsify --noImplicitAny ] > build/index.js && open index.html",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/testPreprocessor.js"
+    },
+    "testMatch": [
+      "<rootDir>/test/**/*.(ts|tsx|js)"
+    ]
   },
   "dependencies": {
+    "@types/jest": "^21.1.2",
     "tsify": "^3.0.3",
     "typescript": "^2.5.3"
   },

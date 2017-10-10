@@ -22,9 +22,16 @@ export default abstract class Entity {
   moveDown() {
     this.y++;
   }
-  
+
   moveUp() {
     this.y--;
+  }
+
+  getPosition() {
+    return {
+      x: this.x,
+      y: this.y
+    }
   }
 
   abstract draw(ctx: CanvasRenderingContext2D): void;

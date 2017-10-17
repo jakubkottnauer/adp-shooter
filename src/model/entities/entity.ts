@@ -11,20 +11,9 @@ export default abstract class Entity {
     this.height = height;
   }
 
-  moveRight() {
-    this.x++;
-  }
-
-  moveLeft() {
-    this.x--;
-  }
-
-  moveDown() {
-    this.y++;
-  }
-
-  moveUp() {
-    this.y--;
+  move(dx: number, dy: number) {
+    this.x += dx;
+    this.y += dy;
   }
 
   getPosition() {

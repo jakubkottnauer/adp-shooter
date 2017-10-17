@@ -1,32 +1,18 @@
-import Enemy from "../model/enemy";
-import Bird from "../model/bird";
 import GameView from "../view/game";
-import Keyboard from '../model/keyboard';
+import Model from "../model/model";
+import Keyboard from "./keyboard";
 
 export default class GameController {
-  ticks = 0;
-  bird = new Bird(20, 20);
-  enemies = new Array<Enemy>();
-  view = new GameView(500, 500);
-  keyboard = new Keyboard();
-
-  constructor() {
-    const enemy = new Enemy(50, 50);
-    this.enemies.push(enemy);
+  keyboard = new Keyboard(() => this.update());
+  model: Model;
+  constructor(model: Model) {
+    this.model = model;
   }
 
   update() {
-    this.ticks++;
-
-    if (this.keyboard.isLeftDown()) this.bird.moveLeft();
-    if (this.keyboard.isRightDown()) this.bird.moveRight();
-    if (this.keyboard.isUpDown()) this.bird.moveUp();
-    if (this.keyboard.isDownDown()) this.bird.moveDown();
-
-    this.enemies.map(enemy => {
-      enemy.moveRight();
-    });
-
-    this.view.render([...this.enemies, this.bird]);
+    if (this.keyboard.isLeftDown()) this.model.moveBird(-3, 0);
+    if (this.keyboard.isRightDown()) this.model.moveBird(3, 0);
+    if (this.keyboard.isUpDown()) this.model.moveBird(0, -3);
+    if (this.keyboard.isDownDown()) this.model.moveBird(0, 3);
   }
 }

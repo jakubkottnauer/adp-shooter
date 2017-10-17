@@ -1,14 +1,9 @@
-import Entity from "../model/entity";
-
 const LEFT = 37;
 const UP = 38;
 const RIGHT = 39;
 const DOWN = 40;
 
 export default class Keyboard {
-  context: CanvasRenderingContext2D;
-  width: number;
-  height: number;
   keys = {
     [LEFT]: false,
     [RIGHT]: false,
@@ -16,7 +11,9 @@ export default class Keyboard {
     [UP]: false
   };
 
-  constructor() {
+  keyDownHandler = () => {};
+
+  constructor(handler: () => void) {
     window.addEventListener(
       "keyup",
       event => {
@@ -31,6 +28,8 @@ export default class Keyboard {
       },
       false
     );
+
+    this.keyDownHandler = handler;
   }
 
   isLeftDown() {
@@ -51,6 +50,7 @@ export default class Keyboard {
 
   onKeydown(event: KeyboardEvent) {
     this.keys[event.keyCode] = true;
+    this.keyDownHandler();
   }
 
   onKeyup(event: KeyboardEvent) {

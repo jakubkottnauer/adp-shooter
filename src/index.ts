@@ -2,10 +2,8 @@ import GameController from "./controller/game";
 import View from "./view/game";
 import Model from "./model/model";
 
-
-
-const worldWidth = 1000;
-const worldHeight = 1000;
+const worldWidth = 640;
+const worldHeight = 480;
 
 const model = new Model(worldWidth, worldHeight);
 const view = new View(model);

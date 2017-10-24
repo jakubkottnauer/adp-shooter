@@ -2,13 +2,15 @@ const LEFT = 37;
 const UP = 38;
 const RIGHT = 39;
 const DOWN = 40;
+const SPACE = 32;
 
 export default class Keyboard {
   keys = {
     [LEFT]: false,
     [RIGHT]: false,
     [DOWN]: false,
-    [UP]: false
+    [UP]: false,
+    [SPACE]: false
   };
 
   keyDownHandler = () => {};
@@ -46,6 +48,10 @@ export default class Keyboard {
 
   isUpDown() {
     return this.keys[UP];
+  }
+
+  isSpaceDown() {
+    return this.keys[SPACE];
   }
 
   onKeydown(event: KeyboardEvent) {

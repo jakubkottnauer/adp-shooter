@@ -1,22 +1,37 @@
 import Entity from "../Entity";
 import BirdState from "./birdStates";
 import Missile from "../missile";
-import Visitor from '../../../visitor/visitor'
+import Visitor from "../../../visitor/visitor";
+import SingleShootingState from "./singleShootingState";
+import DoubleShootingState from "./doubleShootingState";
 
 export default class Bird extends Entity {
-
-  state = BirdState.Single
+  private _state = BirdState.Single;
+  private stateInstance = new SingleShootingState();
 
   constructor(x: number, y: number) {
     super(x, y, 60, 60);
   }
 
-  accept(visitor: Visitor) {
-    visitor.visitBird(this)
+  get state() {
+    return this._state;
   }
 
-  fire() : Array<Missile> {
-    const [ x, y ] = this.position;
-    return [new Missile(x, y)];
+  accept(visitor: Visitor) {
+    visitor.visitBird(this);
+  }
+
+  fire(): Array<Missile> {
+    return this.stateInstance.fire(this);
+  }
+
+  toggleState() {
+    if (this._state == BirdState.Single) {
+      this._state = BirdState.Double;
+      this.stateInstance = new DoubleShootingState();
+    } else {
+      this._state = BirdState.Single;
+      this.stateInstance = new SingleShootingState();
+    }
   }
 }

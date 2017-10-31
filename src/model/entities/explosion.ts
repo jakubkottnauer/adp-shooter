@@ -7,6 +7,6 @@ export default class Explosion extends Entity {
   }
 
   accept(visitor: Visitor) {
-    visitor.visitExplosion(this)
+    visitor.visitExplosion(this);
   }
 }

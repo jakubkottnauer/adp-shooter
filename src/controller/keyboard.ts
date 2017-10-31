@@ -3,6 +3,7 @@ const UP = 38;
 const RIGHT = 39;
 const DOWN = 40;
 const SPACE = 32;
+const SHIFT = 16;
 
 export default class Keyboard {
   private keys = {
@@ -10,7 +11,8 @@ export default class Keyboard {
     [RIGHT]: false,
     [DOWN]: false,
     [UP]: false,
-    [SPACE]: false
+    [SPACE]: false,
+    [SHIFT]: false
   };
 
   private keyDownHandler = () => {};
@@ -54,12 +56,16 @@ export default class Keyboard {
     return this.keys[SPACE];
   }
 
-  onKeydown(event: KeyboardEvent) {
+  isShiftDown() {
+    return this.keys[SHIFT];
+  }
+
+  private onKeydown(event: KeyboardEvent) {
     this.keys[event.keyCode] = true;
     this.keyDownHandler();
   }
 
-  onKeyup(event: KeyboardEvent) {
+  private onKeyup(event: KeyboardEvent) {
     delete this.keys[event.keyCode];
   }
 }

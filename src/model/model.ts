@@ -83,6 +83,14 @@ export default class Model extends Subject {
     this.missiles = [...this.missiles, ...newMissiles];
   }
 
+  toggleBirdState() {
+    this.bird.toggleState();
+  }
+
+  get birdState() {
+    return this.bird.state
+  }
+
   update() {
     for (let j = this.missiles.length - 1; j >= 0; j--) {
       this.moveMissile(j);

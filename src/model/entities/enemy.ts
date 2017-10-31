@@ -1,7 +1,12 @@
 import Entity from "./Entity";
+import Visitor from '../../visitor/visitor'
 
 export default class Enemy extends Entity {
   constructor(x: number, y: number) {
-    super("assets/pig.png", x, y, 60, 60);
+    super(x, y, 60, 60);
+  }
+
+  accept(visitor: Visitor) {
+    visitor.visitEnemy(this)
   }
 }

@@ -1,44 +1,34 @@
-export default abstract class Entity {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  id?: number;
-  sprite = new Image();
+import Visitable from "../../visitor/visitable";
+import Visitor from "../../visitor/visitor";
+
+export default abstract class Entity implements Visitable {
+  private _position: [number, number];
+  private _dimensions: [number, number];
 
   constructor(
-    sprite: string,
     x: number,
     y: number,
     width: number,
     height: number,
     id: number = 0
   ) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.sprite.src = sprite;
-    this.id = id;
+    this._position = [x, y];
+    this._dimensions = [width, height];
+  }
+
+  accept(visitor: Visitor) {
   }
 
   move(dx: number, dy: number) {
-    this.x += dx;
-    this.y += dy;
+    this._position = [this.position[0] += dx, this.position[1] += dy]
   }
 
-  getPosition() {
-    return {
-      x: this.x,
-      y: this.y
-    };
+  get position() {
+    return this._position;
   }
 
-  getDimensions() {
-    return {
-      width: this.width,
-      height: this.height
-    };
+  get dimensions() {
+    return this._dimensions;
   }
 
   isWithinWorld(
@@ -47,14 +37,12 @@ export default abstract class Entity {
     dx: number = 0,
     dy: number = 0
   ) {
-    if (this.x + dx > worldWidth || this.y + dy + this.height > worldHeight)
+    const [x, y] = this.position;
+    const [width, height] = this.dimensions;
+    if (x + dx > worldWidth || y + dy + height > worldHeight)
       return false;
-    if (this.x + dx < 0 || this.y + dy < 0) return false;
+    if (x + dx < 0 || y + dy < 0) return false;
     return true;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.drawImage(this.sprite, this.x, this.y, this.width, this.height);
   }
 
   private overlaps(
@@ -70,11 +58,13 @@ export default abstract class Entity {
   }
 
   collidesWith(other: Entity) {
-    const otherPosition = other.getPosition();
-    const otherDimensions = other.getDimensions();
+    const [dx, dy] = other.position;
+    const [dWidth, dHeight] = other.dimensions;
+    const [x, y] = this.position;
+    const [width, height] = this.dimensions;
     return (
-      this.overlaps(this.x, this.width, other.x, other.width) &&
-      this.overlaps(this.y, this.height, other.y, other.height)
+      this.overlaps(x, width, dx, dWidth) &&
+      this.overlaps(y, height, dy, dHeight)
     );
   }
 }

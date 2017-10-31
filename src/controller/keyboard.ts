@@ -5,7 +5,7 @@ const DOWN = 40;
 const SPACE = 32;
 
 export default class Keyboard {
-  keys = {
+  private keys = {
     [LEFT]: false,
     [RIGHT]: false,
     [DOWN]: false,
@@ -13,7 +13,7 @@ export default class Keyboard {
     [SPACE]: false
   };
 
-  keyDownHandler = () => {};
+  private keyDownHandler = () => {};
 
   constructor(handler: () => void) {
     window.addEventListener(

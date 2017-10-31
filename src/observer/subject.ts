@@ -1,7 +1,7 @@
 import Observer from "./observer";
 
 export default abstract class Subject {
-  observers = new Array<Observer>();
+  private observers = new Array<Observer>();
   subscribe(observer: Observer) {
     this.observers.push(observer);
   }

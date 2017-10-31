@@ -1,49 +1,45 @@
-import Bird from "../model/entities/bird";
+import Bird from "../model/entities/bird/bird";
 import Enemy from "../model/entities/enemy";
 import Entity from "../model/entities/entity";
 import Subject from "../observer/subject";
 import Missile from "../model/entities/missile";
 import Explosion from "../model/entities/explosion";
-import State from '../states';
+import State from '../gameStates';
 
 export default class Model extends Subject {
-  bird = new Bird(20, 20);
-  enemies = new Array<Enemy>();
-  missile: Missile;
-  explosions = new Array<Explosion>();
-  worldHeight: number;
-  worldWidth: number;
-  state = State.Playing;
+  private bird = new Bird(20, 20);
+  private enemies = new Array<Enemy>();
+  private missiles = new Array<Missile>();
+  private explosions = new Array<Explosion>();
+  private worldDimensions: [number, number];
+  private state = State.Playing;
 
   constructor(width: number, height: number) {
     super();
-    this.worldWidth = width;
-    this.worldHeight = height;
+    this.worldDimensions = [width, height];
 
     this.generateEnemies(2, 4);
   }
 
   generateEnemies(min: number, max: number) {
     const enemyCount = this.randomBetween(min, max);
+    const [ width, height ] = this.worldDimensions
     for (let i = 0; i < enemyCount; i++) {
       const enemy = new Enemy(
-        this.randomBetween(100 + i * 70, this.worldWidth - 100),
-        this.randomBetween(5, this.worldHeight - 50)
+        this.randomBetween(100 + i * 70, width - 100),
+        this.randomBetween(5, height - 50)
       );
-      console.log(enemy.getPosition());
+      console.log(enemy.position);
       this.enemies.push(enemy);
     }
   }
 
   getWorldDimensions() {
-    return { width: this.worldWidth, height: this.worldHeight };
+    return this.worldDimensions;
   }
 
   getEntities(): Array<Entity> {
-    if (this.missile != null) {
-      return [...this.enemies, ...this.explosions, this.bird, this.missile];
-    }
-    return [...this.enemies, ...this.explosions, this.bird];
+    return [...this.enemies, ...this.explosions, this.bird, ...this.missiles];
   }
 
   getState() {
@@ -55,7 +51,8 @@ export default class Model extends Subject {
   }
 
   private moveBird(dx: number, dy: number) {
-    if (!this.bird.isWithinWorld(this.worldWidth, this.worldHeight, dx, dy)) {
+    const [ width, height ] = this.worldDimensions
+    if (!this.bird.isWithinWorld(width, height, dx, dy)) {
       return;
     }
     this.bird.move(dx, dy);
@@ -69,43 +66,44 @@ export default class Model extends Subject {
     this.moveBird(0, -5);
   }
 
-  moveMissile() {
-    if (!this.missile.isWithinWorld(this.worldWidth, this.worldHeight)) {
-      this.missile = null;
+  moveMissile(idx: number) {
+    const [ width, height ] = this.worldDimensions
+    if (!this.missiles[idx].isWithinWorld(width, height)) {
+      this.missiles.splice(idx, 1);
       return;
     }
-    this.missile.move(8, 0);
+    this.missiles[idx].move(6, 0);
   }
 
-  createMissile() {
-    if (this.missile) {
+  birdFire() {
+    if (this.missiles.length === 3) {
       return;
     }
-    const { x, y } = this.bird.getPosition();
-    this.missile = new Missile(x, y);
+    const newMissiles = this.bird.fire();
+    this.missiles = [...this.missiles, ...newMissiles];
   }
 
   update() {
-    if (this.missile != null) {
-      for(let i = 0; i < this.enemies.length; i++) {
-        if (this.missile.collidesWith(this.enemies[i])) {
-          this.enemies.splice(i, 1);
-          const missPos = this.missile.getPosition();
-          const exp = new Explosion(missPos.x, missPos.y);
+    for (let j = this.missiles.length - 1; j >= 0; j--) {
+      this.moveMissile(j);
+    }
+
+    for (let j = this.missiles.length - 1; j >= 0; j--) {
+      for (let i = this.enemies.length - 1; i >= 0 ; i--) {
+        if (this.missiles[j].collidesWith(this.enemies[i])) {
+          const [ missX, missY ] = this.missiles[j].position;
+          const exp = new Explosion(missX, missY);
           this.explosions.push(exp);
 
           setTimeout(() => {
             this.explosions = new Array<Explosion>();
           }, 500)
-          this.missile = null;
+          this.enemies.splice(i, 1);
+          this.missiles.splice(j, 1);
           return;
         }
       }
-    }
-
-    if (this.missile != null) {
-      this.moveMissile();
-    }
+    } 
 
     if (this.enemies.length === 0) {
       this.state = State.Victory;

@@ -16,11 +16,10 @@ export default abstract class Entity implements Visitable {
     this._dimensions = [width, height];
   }
 
-  accept(visitor: Visitor) {
-  }
+  accept(visitor: Visitor) {}
 
   move(dx: number, dy: number) {
-    this._position = [this.position[0] += dx, this.position[1] += dy]
+    this._position = [(this.position[0] += dx), (this.position[1] += dy)];
   }
 
   get position() {
@@ -39,8 +38,7 @@ export default abstract class Entity implements Visitable {
   ) {
     const [x, y] = this.position;
     const [width, height] = this.dimensions;
-    if (x + dx > worldWidth || y + dy + height > worldHeight)
-      return false;
+    if (x + dx > worldWidth || y + dy + height > worldHeight) return false;
     if (x + dx < 0 || y + dy < 0) return false;
     return true;
   }

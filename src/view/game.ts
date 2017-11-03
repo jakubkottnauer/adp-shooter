@@ -3,7 +3,7 @@ import Model from "../model/model";
 import Observer from "../observer/observer";
 import State from "../gameStates";
 import Drawer from "./drawer";
-import BirdState from '../model/entities/bird/birdStates';
+import BirdState from "../model/entities/bird/birdStates";
 
 export default class GameView implements Observer {
   private context: CanvasRenderingContext2D;
@@ -17,7 +17,13 @@ export default class GameView implements Observer {
     this.model = model;
   }
 
-  private render(state: State, entities: Array<Entity>, birdState: BirdState) {
+  private render(
+    state: State,
+    score: number,
+    entities: Array<Entity>,
+    birdState: BirdState,
+    realismState: boolean
+  ) {
     const [width, height] = this.dimensions;
     this.context.clearRect(0, 0, width, height);
     this.context.fillStyle = "#000";
@@ -28,7 +34,9 @@ export default class GameView implements Observer {
     if (state === State.Playing) {
       entities.forEach(entity => drawer.render(this.context, entity));
       this.context.font = "15px Arial";
-      this.context.fillText("Shooting mode: " + birdState, 10, 50);
+      this.context.fillText("Shooting mode: " + (birdState + 1), 10, 50);
+      this.context.fillText("Is realistic: " + realismState, 10, 70);
+      this.context.fillText("Score: " + score, 10, 90);
     } else {
       this.context.font = "30px Arial";
       this.context.fillText("YOU WON!", 10, 50);
@@ -36,6 +44,12 @@ export default class GameView implements Observer {
   }
 
   notify() {
-    this.render(this.model.getState(), this.model.getEntities(), this.model.birdState);
+    this.render(
+      this.model.getState(),
+      this.model.getScore(),
+      this.model.getEntities(),
+      this.model.birdState,
+      this.model.realismState
+    );
   }
 }

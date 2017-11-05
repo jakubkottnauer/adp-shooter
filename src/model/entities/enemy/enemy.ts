@@ -11,6 +11,6 @@ export default class Enemy extends Entity {
   }
 
   move(dx: number = 0, dy: number = 0) {
-    super.move(dx, dy)
+     return super.move(dx, dy)
   }
 }

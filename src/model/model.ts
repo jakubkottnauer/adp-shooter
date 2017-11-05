@@ -69,7 +69,7 @@ export default class Model extends Subject {
 
   private moveBird(dx: number, dy: number) {
     const [width, height] = this.worldDimensions;
-    if (!this.bird.isWithinWorld(width, height, dx, dy)) {
+    if (!this.bird.isWithinWorld(width, height)) {
       return;
     }
     this.bird.move(dx, dy);
@@ -85,11 +85,10 @@ export default class Model extends Subject {
 
   moveMissile(idx: number) {
     const [width, height] = this.worldDimensions;
-    if (!this.missiles[idx].isWithinWorld(width, height)) {
+    if (!this.missiles[idx].move()) {
       this.missiles.splice(idx, 1);
       return;
     }
-    this.missiles[idx].move(6, 0);
   }
 
   moveEnemy(idx: number) {

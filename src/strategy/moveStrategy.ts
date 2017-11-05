@@ -1,3 +1,3 @@
 export default interface MoveStrategy {
-  getDirection(): any;
+  getDirection(angle: number): any;
 };

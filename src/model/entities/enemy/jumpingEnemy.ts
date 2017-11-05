@@ -18,6 +18,6 @@ export default class JumpingEnemy extends Enemy {
     } else if (curY - origY <= 0) {
       this._dy = 1;
     }
-    super.move(0, this._dy);
+     return super.move(0, this._dy);
   }
 }

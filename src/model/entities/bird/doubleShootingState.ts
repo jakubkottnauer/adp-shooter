@@ -8,8 +8,8 @@ export default class DoubleShootingState implements BirdState {
     const [x, y] = bird.position;
     const factory = bird.missileFactory;
     return [
-      factory.createMissile(x, y),
-      factory.createMissile(x + 70, y)
+      factory.createMissile(x, y, 80),
+      factory.createMissile(x, y, 100)
     ];
   }
 }

@@ -4,19 +4,22 @@ import MoveStrategy from "../../strategy/moveStrategy";
 import SimpleMissile from "../../strategy/simpleMissileStrategy";
 
 export default class Missile extends Entity {
-  private moveStrategy: MoveStrategy;
+  private _moveStrategy: MoveStrategy;
+  private _angle: number;
 
-  constructor(x: number, y: number, strategy: MoveStrategy) {
+  constructor(x: number, y: number, angle: number, strategy: MoveStrategy) {
     super(x, y, 40, 40);
-    this.moveStrategy = strategy;
+    this._moveStrategy = strategy;
+    this._angle = angle;
   }
 
   accept(visitor: Visitor) {
     visitor.visitMissile(this);
   }
 
-  move(dx: number, dy: number) {
-    const dir = this.moveStrategy.getDirection();
-    super.move(dx + dir[0], dy + dir[1]);
+  move() {
+    const speed = 8;
+    const dir = this._moveStrategy.getDirection(this._angle);
+    return super.move(speed * dir[0], speed * dir[1]);
   }
 }

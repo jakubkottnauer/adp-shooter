@@ -1,6 +1,6 @@
 import AbstractFactory from "./abstractFactory";
 import Missile from "../model/entities/missile";
-import Enemy from "../model/entities/enemy";
+import JumpingEnemy from "../model/entities/enemy/jumpingEnemy";
 import GravityMissileStrategy from "../strategy/gravityMissileStrategy";
 
 export default class RealisticFactory implements AbstractFactory {
@@ -9,6 +9,6 @@ export default class RealisticFactory implements AbstractFactory {
   }
 
   createEnemy(x: number, y: number) {
-    return new Enemy(x, y);
+    return new JumpingEnemy(x, y);
   }
 }

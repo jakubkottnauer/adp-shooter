@@ -1,5 +1,5 @@
 import Bird from "../model/entities/bird/bird";
-import Enemy from "../model/entities/enemy";
+import Enemy from "../model/entities/enemy/enemy";
 import Entity from "../model/entities/entity";
 import Subject from "../observer/subject";
 import Missile from "../model/entities/missile";
@@ -14,7 +14,7 @@ enum Mode {
   Realistic
 }
 
-const GAME_MODE: Mode = Mode.Simple;
+const GAME_MODE: Mode = Mode.Realistic;
 
 export default class Model extends Subject {
   private bird: Bird;
@@ -92,6 +92,10 @@ export default class Model extends Subject {
     this.missiles[idx].move(6, 0);
   }
 
+  moveEnemy(idx: number) {
+    this.enemies[idx].move();
+  }
+
   birdFire() {
     if (this.missiles.length === 3) {
       return;
@@ -113,8 +117,12 @@ export default class Model extends Subject {
   }
 
   update() {
-    for (let j = this.missiles.length - 1; j >= 0; j--) {
-      this.moveMissile(j);
+    for (let i = this.missiles.length - 1; i >= 0; i--) {
+      this.moveMissile(i);
+    }
+
+    for (let i = this.enemies.length - 1; i >= 0; i--) {
+      this.moveEnemy(i);
     }
 
     for (let j = this.missiles.length - 1; j >= 0; j--) {

@@ -1,5 +1,5 @@
-import Entity from "./Entity";
-import Visitor from '../../visitor/visitor'
+import Entity from "../Entity";
+import Visitor from '../../../visitor/visitor'
 
 export default class Enemy extends Entity {
   constructor(x: number, y: number) {
@@ -8,5 +8,9 @@ export default class Enemy extends Entity {
 
   accept(visitor: Visitor) {
     visitor.visitEnemy(this)
+  }
+
+  move(dx: number = 0, dy: number = 0) {
+    super.move(dx, dy)
   }
 }

@@ -1,6 +1,6 @@
 import AbstractFactory from "./abstractFactory";
 import Missile from "../model/entities/missile";
-import Enemy from "../model/entities/enemy";
+import Enemy from "../model/entities/enemy/enemy";
 import SimpleMissileStrategy from "../strategy/simpleMissileStrategy";
 
 export default class SimpleFactory implements AbstractFactory {

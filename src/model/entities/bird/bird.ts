@@ -30,7 +30,7 @@ export default class Bird extends Entity {
   }
 
   fire(): Array<Missile> {
-    return this._stateInstance.fire(this);
+    return this._stateInstance.fire(this._missileFactory, this.position[0], this.position[1]);
   }
 
   toggleState() {

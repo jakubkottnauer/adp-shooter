@@ -1,3 +1,5 @@
+import Missile from '../model/entities/missile'
+
 export default interface MoveStrategy {
-  getDirection(angle: number): any;
+  getDirection(missile: Missile, gravity: number): any;
 };

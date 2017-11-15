@@ -5,62 +5,40 @@ import Subject from "../observer/subject";
 import Missile from "../model/entities/missile";
 import Explosion from "../model/entities/explosion";
 import State from "../gameStates";
-import SimpleFactory from "../factory/simpleFactory";
-import RealisticFactory from "../factory/realisticFactory";
 import AbstractFactory from "../factory/abstractFactory";
+import ModelInterface from "./modelInterface";
+import Memento from '../memento/memento';
+import GameState from '../memento/gameState';
 
-enum Mode {
-  Simple,
-  Realistic
-}
+export default class Model extends Subject implements ModelInterface {
+  private _bird: Bird;
+  private _enemies = new Array<Enemy>();
+  private _missiles = new Array<Missile>();
+  private _explosions = new Array<Explosion>();
+  private _worldDimensions: [number, number];
+  private _savedGames = new Array<Memento>();
+  private _state = State.Playing;
+  private _score = 0;
+  private _factory: AbstractFactory;
 
-const GAME_MODE: Mode = Mode.Realistic;
-
-export default class Model extends Subject {
-  private bird: Bird;
-  private enemies = new Array<Enemy>();
-  private missiles = new Array<Missile>();
-  private explosions = new Array<Explosion>();
-  private worldDimensions: [number, number];
-  private state = State.Playing;
-  private score = 0;
-  private factory: AbstractFactory;
-
-  constructor(width: number, height: number) {
+  constructor(width: number, height: number, factory: AbstractFactory) {
     super();
-    this.worldDimensions = [width, height];
-    this.factory =
-      GAME_MODE == Mode.Simple ? new SimpleFactory() : new RealisticFactory();
-    this.bird = new Bird(20, height / 2, this.factory);
+    this._worldDimensions = [width, height];
+    this._factory = factory;
+    this._bird = new Bird(20, height / 2, this._factory);
     this.generateEnemies(2, 5);
   }
 
-  generateEnemies(min: number, max: number) {
+  private generateEnemies(min: number, max: number) {
     const enemyCount = this.randomBetween(min, max);
     const [width, height] = this.worldDimensions;
     for (let i = 0; i < enemyCount; i++) {
-      const enemy = this.factory.createEnemy(
+      const enemy = this._factory.createEnemy(
         this.randomBetween(100 + i * 70, width - 100),
         this.randomBetween(5, height - 50)
       );
-      this.enemies.push(enemy);
+      this._enemies.push(enemy);
     }
-  }
-
-  getWorldDimensions() {
-    return this.worldDimensions;
-  }
-
-  getEntities(): Array<Entity> {
-    return [...this.enemies, ...this.explosions, this.bird, ...this.missiles];
-  }
-
-  getState() {
-    return this.state;
-  }
-
-  getScore() {
-    return this.score;
   }
 
   private randomBetween(min: number, max: number) {
@@ -69,10 +47,49 @@ export default class Model extends Subject {
 
   private moveBird(dx: number, dy: number) {
     const [width, height] = this.worldDimensions;
-    if (!this.bird.isWithinWorld(width, height)) {
+    if (!this._bird.isWithinWorld(width, height)) {
       return;
     }
-    this.bird.move(dx, dy);
+    this._bird.move(dx, dy);
+  }
+
+  get worldDimensions() {
+    return this._worldDimensions;
+  }
+
+  get entities(): Array<Entity> {
+    return [...this._enemies, ...this._explosions, this._bird, ...this._missiles];
+  }
+
+  get state() {
+    return this._state;
+  }
+
+  get score() {
+    return this._score;
+  }
+
+  get birdState() {
+    return this._bird.state;
+  }
+
+  get realismState() {
+    return true;
+    // TODO: fix
+    //return GAME_MODE === Mode.Realistic;
+  }
+
+  saveGame() {
+    const state = new GameState();
+    // serialize
+    const m = new Memento(state)
+    this._savedGames.push(m)
+  }
+
+  loadGame() {
+    if (this._savedGames.length === 0) return;
+    const state = this._savedGames.pop();
+    // deserialize
   }
 
   moveBirdDown() {
@@ -85,64 +102,58 @@ export default class Model extends Subject {
 
   moveMissile(idx: number) {
     const [width, height] = this.worldDimensions;
-    if (!this.missiles[idx].move()) {
-      this.missiles.splice(idx, 1);
+    if (!this._missiles[idx].move()) {
+      this._missiles.splice(idx, 1);
       return;
     }
   }
 
   moveEnemy(idx: number) {
-    this.enemies[idx].move();
+    this._enemies[idx].move();
   }
 
+  // TODO: birdFire dostane missileFactory jako param
   birdFire() {
-    if (this.missiles.length === 3) {
+    if (this._missiles.length >= 3) {
       return;
     }
-    const newMissiles = this.bird.fire();
-    this.missiles = [...this.missiles, ...newMissiles];
+
+    const newMissiles = this._bird.fire();
+    this._missiles = [...this._missiles, ...newMissiles];
   }
 
   toggleBirdState() {
-    this.bird.toggleState();
-  }
-
-  get birdState() {
-    return this.bird.state;
-  }
-
-  get realismState() {
-    return GAME_MODE === Mode.Realistic;
+    this._bird.toggleState();
   }
 
   update() {
-    for (let i = this.missiles.length - 1; i >= 0; i--) {
+    for (let i = this._missiles.length - 1; i >= 0; i--) {
       this.moveMissile(i);
     }
 
-    for (let i = this.enemies.length - 1; i >= 0; i--) {
+    for (let i = this._enemies.length - 1; i >= 0; i--) {
       this.moveEnemy(i);
     }
 
-    for (let j = this.missiles.length - 1; j >= 0; j--) {
-      for (let i = this.enemies.length - 1; i >= 0; i--) {
-        if (this.missiles[j].collidesWith(this.enemies[i])) {
-          const [missX, missY] = this.missiles[j].position;
+    for (let j = this._missiles.length - 1; j >= 0; j--) {
+      for (let i = this._enemies.length - 1; i >= 0; i--) {
+        if (this._missiles[j].collidesWith(this._enemies[i])) {
+          const [missX, missY] = this._missiles[j].position;
           const exp = new Explosion(missX, missY);
-          this.explosions.push(exp);
-          this.score++;
+          this._explosions.push(exp);
+          this._score++;
           setTimeout(() => {
-            this.explosions = new Array<Explosion>();
+            this._explosions = new Array<Explosion>();
           }, 500);
-          this.enemies.splice(i, 1);
-          this.missiles.splice(j, 1);
+          this._enemies.splice(i, 1);
+          this._missiles.splice(j, 1);
           return;
         }
       }
     }
 
-    if (this.enemies.length === 0) {
-      this.state = State.Victory;
+    if (this._enemies.length === 0) {
+      this._state = State.Victory;
     }
     this.notifyObservers();
   }

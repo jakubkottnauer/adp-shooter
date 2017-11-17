@@ -50,6 +50,14 @@ export default class ModelProxy implements ModelInterface {
     this.subject.update();
   }
 
+  loadGame() {
+    this.subject.loadGame();
+  }
+
+  saveGame() {
+    this.subject.saveGame();
+  }
+
   subscribe(observer: Observer) {
     this.subject.subscribe(observer);
   }

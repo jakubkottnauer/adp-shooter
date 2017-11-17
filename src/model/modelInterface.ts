@@ -17,6 +17,8 @@ export default interface ModelInterface {
   birdFire(): void;
   toggleBirdState(): void;
   update(): void;
+  loadGame(): void;
+  saveGame(): void;
 
   subscribe(observer: Observer): void;
 };

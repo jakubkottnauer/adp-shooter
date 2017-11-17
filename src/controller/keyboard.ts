@@ -5,7 +5,8 @@ const DOWN = 40;
 const SPACE = 32;
 const SHIFT = 16;
 const CTRL = 17;
-
+const LKEY = 76;
+const KKEY = 75;
 
 export default class Keyboard {
   private keys = {
@@ -15,7 +16,9 @@ export default class Keyboard {
     [UP]: false,
     [SPACE]: false,
     [SHIFT]: false,
-    [CTRL]: false
+    [CTRL]: false,
+    [LKEY]: false,
+    [KKEY]: false
   };
 
   private keyDownHandler = () => {};
@@ -65,6 +68,14 @@ export default class Keyboard {
 
   isControlDown() {
     return this.keys[CTRL];
+  }
+
+  isLKeyDown() {
+    return this.keys[LKEY];
+  }
+
+  isKKeyDown() {
+    return this.keys[KKEY];
   }
 
   private onKeydown(event: KeyboardEvent) {

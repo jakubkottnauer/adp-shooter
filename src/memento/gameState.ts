@@ -12,7 +12,7 @@ export default class GameState {
   private _enemies = new Array<Enemy>();
   private _missiles = new Array<Missile>();
   private _explosions = new Array<Explosion>();
-  private _state = State.Playing;
+  private _state: State = State.Playing;
   private _score = 0;
 
   get bird() {

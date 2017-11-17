@@ -7,8 +7,8 @@ import Explosion from "../model/entities/explosion";
 import State from "../gameStates";
 import AbstractFactory from "../factory/abstractFactory";
 import ModelInterface from "./modelInterface";
-import Memento from '../memento/memento';
-import GameState from '../memento/gameState';
+import Memento from "../memento/memento";
+import GameState from "../memento/gameState";
 
 export default class Model extends Subject implements ModelInterface {
   private _bird: Bird;
@@ -17,7 +17,7 @@ export default class Model extends Subject implements ModelInterface {
   private _explosions = new Array<Explosion>();
   private _worldDimensions: [number, number];
   private _savedGames = new Array<Memento>();
-  private _state = State.Playing;
+  private _state: State = State.Playing;
   private _score = 0;
   private _factory: AbstractFactory;
 
@@ -53,12 +53,23 @@ export default class Model extends Subject implements ModelInterface {
     this._bird.move(dx, dy);
   }
 
+  private clone<T>(instance: T): T {
+    const copy = new (instance.constructor as { new (): T })();
+    Object.assign(copy, instance);
+    return copy;
+  }
+
   get worldDimensions() {
     return this._worldDimensions;
   }
 
   get entities(): Array<Entity> {
-    return [...this._enemies, ...this._explosions, this._bird, ...this._missiles];
+    return [
+      ...this._enemies,
+      ...this._explosions,
+      this._bird,
+      ...this._missiles
+    ];
   }
 
   get state() {
@@ -81,15 +92,26 @@ export default class Model extends Subject implements ModelInterface {
 
   saveGame() {
     const state = new GameState();
-    // serialize
-    const m = new Memento(state)
-    this._savedGames.push(m)
+    state.bird = this.clone(this._bird);
+    state.enemies = this._enemies.map(e => this.clone(e));
+    state.missiles = this._missiles.map(e => this.clone(e));
+    state.explosions = this._explosions.map(e => this.clone(e));
+    state.state = this._state;
+    state.score = this._score;
+    console.log('SAVING SCORE', state.score)
+    const m = new Memento(state);
+    this._savedGames.push(m);
   }
 
   loadGame() {
     if (this._savedGames.length === 0) return;
-    const state = this._savedGames.pop();
-    // deserialize
+    const state = this._savedGames.pop().state;
+    this._bird = this.clone(state.bird);
+    this._enemies = state.enemies.map(e => this.clone(e));
+    this._missiles = state.missiles.map(e => this.clone(e));
+    this._explosions = state.explosions.map(e => this.clone(e));
+    this._state = state.state;
+    this._score = state.score;
   }
 
   moveBirdDown() {
@@ -142,6 +164,7 @@ export default class Model extends Subject implements ModelInterface {
           const exp = new Explosion(missX, missY);
           this._explosions.push(exp);
           this._score++;
+
           setTimeout(() => {
             this._explosions = new Array<Explosion>();
           }, 500);

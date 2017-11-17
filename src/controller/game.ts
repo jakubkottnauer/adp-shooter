@@ -20,6 +20,8 @@ export default class GameController {
     if (this.keyboard.isDownDown()) this.model.moveBirdDown();
     if (this.keyboard.isSpaceDown()) this.model.birdFire();
     if (this.keyboard.isShiftDown()) this.model.toggleBirdState();
+    if (this.keyboard.isLKeyDown()) this.model.loadGame();
+    if (this.keyboard.isKKeyDown()) this.model.saveGame();
     //TODO: místo toho co je if (this.keyboard....) this.registerCommand(new MoveBirdUpCommand(model))
   }
 }

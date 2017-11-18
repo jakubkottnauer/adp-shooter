@@ -1,9 +1,9 @@
+import State from "../gameStates";
+import BirdState from "../model/entities/bird/birdStates";
 import Entity from "../model/entities/entity";
 import ModelInterface from "../model/modelInterface";
 import Observer from "../observer/observer";
-import State from "../gameStates";
 import Drawer from "./drawer";
-import BirdState from "../model/entities/bird/birdStates";
 
 export default class GameView implements Observer {
   private context: CanvasRenderingContext2D;
@@ -11,7 +11,7 @@ export default class GameView implements Observer {
   private model: ModelInterface;
 
   constructor(model: ModelInterface) {
-    const canvas = <HTMLCanvasElement>document.getElementById("canvas");
+    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     this.context = canvas.getContext("2d");
     this.dimensions = model.worldDimensions;
     this.model = model;
@@ -20,7 +20,7 @@ export default class GameView implements Observer {
   private render(
     state: State,
     score: number,
-    entities: Array<Entity>,
+    entities: Entity[],
     birdState: BirdState,
     realismState: boolean
   ) {
@@ -43,7 +43,7 @@ export default class GameView implements Observer {
     }
   }
 
-  notify() {
+  public notify() {
     this.render(
       this.model.state,
       this.model.score,

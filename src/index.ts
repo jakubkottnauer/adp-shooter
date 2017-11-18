@@ -1,10 +1,10 @@
 import GameController from "./controller/game";
-import View from "./view/game";
-import ModelProxy from "./model/modelProxy";
-import Model from "./model/model";
-import SimpleFactory from "./factory/simpleFactory";
-import RealisticFactory from "./factory/realisticFactory";
 import AbstractFactory from "./factory/abstractFactory";
+import RealisticFactory from "./factory/realisticFactory";
+import SimpleFactory from "./factory/simpleFactory";
+import Model from "./model/model";
+import ModelProxy from "./model/modelProxy";
+import View from "./view/game";
 
 enum Mode {
   Simple,

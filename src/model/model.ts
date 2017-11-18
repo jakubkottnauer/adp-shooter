@@ -1,14 +1,14 @@
+import AbstractFactory from "../factory/abstractFactory";
+import State from "../gameStates";
+import GameState from "../memento/gameState";
+import Memento from "../memento/memento";
 import Bird from "../model/entities/bird/bird";
 import Enemy from "../model/entities/enemy/enemy";
 import Entity from "../model/entities/entity";
-import Subject from "../observer/subject";
-import Missile from "../model/entities/missile";
 import Explosion from "../model/entities/explosion";
-import State from "../gameStates";
-import AbstractFactory from "../factory/abstractFactory";
+import Missile from "../model/entities/missile";
+import Subject from "../observer/subject";
 import ModelInterface from "./modelInterface";
-import Memento from "../memento/memento";
-import GameState from "../memento/gameState";
 
 export default class Model extends Subject implements ModelInterface {
   private _bird: Bird;
@@ -63,7 +63,7 @@ export default class Model extends Subject implements ModelInterface {
     return this._worldDimensions;
   }
 
-  get entities(): Array<Entity> {
+  get entities(): Entity[] {
     return [
       ...this._enemies,
       ...this._explosions,
@@ -90,7 +90,7 @@ export default class Model extends Subject implements ModelInterface {
     //return GAME_MODE === Mode.Realistic;
   }
 
-  saveGame() {
+  public saveGame() {
     const state = new GameState();
     state.bird = this.clone(this._bird);
     state.enemies = this._enemies.map(e => this.clone(e));
@@ -103,8 +103,8 @@ export default class Model extends Subject implements ModelInterface {
     this._savedGames.push(m);
   }
 
-  loadGame() {
-    if (this._savedGames.length === 0) return;
+  public loadGame() {
+    if (this._savedGames.length === 0) { return; }
     const state = this._savedGames.pop().state;
     this._bird = this.clone(state.bird);
     this._enemies = state.enemies.map(e => this.clone(e));
@@ -114,15 +114,15 @@ export default class Model extends Subject implements ModelInterface {
     this._score = state.score;
   }
 
-  moveBirdDown() {
+  public moveBirdDown() {
     this.moveBird(0, 5);
   }
 
-  moveBirdUp() {
+  public moveBirdUp() {
     this.moveBird(0, -5);
   }
 
-  moveMissile(idx: number) {
+  public moveMissile(idx: number) {
     const [width, height] = this.worldDimensions;
     if (!this._missiles[idx].move()) {
       this._missiles.splice(idx, 1);
@@ -130,12 +130,12 @@ export default class Model extends Subject implements ModelInterface {
     }
   }
 
-  moveEnemy(idx: number) {
+  public moveEnemy(idx: number) {
     this._enemies[idx].move();
   }
 
   // TODO: birdFire dostane missileFactory jako param
-  birdFire() {
+  public birdFire() {
     if (this._missiles.length >= 3) {
       return;
     }
@@ -144,11 +144,11 @@ export default class Model extends Subject implements ModelInterface {
     this._missiles = [...this._missiles, ...newMissiles];
   }
 
-  toggleBirdState() {
+  public toggleBirdState() {
     this._bird.toggleState();
   }
 
-  update() {
+  public update() {
     for (let i = this._missiles.length - 1; i >= 0; i--) {
       this.moveMissile(i);
     }

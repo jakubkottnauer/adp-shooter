@@ -1,10 +1,10 @@
-import Entity from "./entities/entity";
-import Observer from "../observer/observer";
 import State from "../gameStates";
+import Observer from "../observer/observer";
+import Entity from "./entities/entity";
 
 export default interface ModelInterface {
   readonly worldDimensions: [number, number];
-  readonly entities: Array<Entity>;
+  readonly entities: Entity[];
   readonly state: State;
   readonly score: number;
   readonly birdState: any;

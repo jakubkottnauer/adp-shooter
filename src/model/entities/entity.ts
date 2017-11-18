@@ -16,9 +16,9 @@ export default abstract class Entity implements Visitable {
     this._dimensions = [width, height];
   }
 
-  accept(visitor: Visitor) {}
+  public accept(visitor: Visitor) {}
 
-  move(dx: number, dy: number): boolean {
+  public move(dx: number, dy: number): boolean {
     this._position = [(this.position[0] += dx), (this.position[1] += dy)];
     // TODO: Fix!
     if (!this.isWithinWorld(640, 480)) {
@@ -37,14 +37,14 @@ export default abstract class Entity implements Visitable {
     return this._dimensions;
   }
 
-  isWithinWorld(
+  public isWithinWorld(
     worldWidth: number,
     worldHeight: number
   ) {
     const [x, y] = this.position;
     const [width, height] = this.dimensions;
-    if (x > worldWidth || y + height > worldHeight) return false;
-    if (x < 0 || y < 0) return false;
+    if (x > worldWidth || y + height > worldHeight) { return false; }
+    if (x < 0 || y < 0) { return false; }
     return true;
   }
 
@@ -60,7 +60,7 @@ export default abstract class Entity implements Visitable {
     return highestStartPoint < lowestEndPoint;
   }
 
-  collidesWith(other: Entity) {
+  public collidesWith(other: Entity) {
     const [dx, dy] = other.position;
     const [dWidth, dHeight] = other.dimensions;
     const [x, y] = this.position;

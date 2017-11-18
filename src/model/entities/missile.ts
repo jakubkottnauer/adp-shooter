@@ -1,7 +1,7 @@
-import TimedEntity from "./timedEntity";
-import Visitor from "../../visitor/visitor";
 import MoveStrategy from "../../strategy/moveStrategy";
 import SimpleMissile from "../../strategy/simpleMissileStrategy";
+import Visitor from "../../visitor/visitor";
+import TimedEntity from "./timedEntity";
 
 export default class Missile extends TimedEntity {
   private _moveStrategy: MoveStrategy;
@@ -16,7 +16,7 @@ export default class Missile extends TimedEntity {
     this._velocity = [Math.cos(this._angle) * speed, Math.sin(this._angle) * speed];
   }
 
-  accept(visitor: Visitor) {
+  public accept(visitor: Visitor) {
     visitor.visitMissile(this);
   }
 
@@ -28,7 +28,7 @@ export default class Missile extends TimedEntity {
     this._velocity = val;
   }
 
-  move() {
+  public move() {
     const dir = this._moveStrategy.getDirection(this, 1);
 
     return super.move(dir[0], dir[1]);

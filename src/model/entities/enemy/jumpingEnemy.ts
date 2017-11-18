@@ -1,5 +1,5 @@
-import Enemy from "./enemy";
 import Visitor from "../../../visitor/visitor";
+import Enemy from "./enemy";
 
 export default class JumpingEnemy extends Enemy {
   private _originalPosition: [number, number];
@@ -9,7 +9,7 @@ export default class JumpingEnemy extends Enemy {
     this._originalPosition = [x, y];
   }
 
-  move() {
+  public move() {
     const [curX, curY] = this.position;
     const [origX, origY] = this._originalPosition;
 

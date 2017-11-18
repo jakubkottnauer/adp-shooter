@@ -1,8 +1,8 @@
-import ModelInterface from "./modelInterface";
 import Observer from "../observer/observer";
+import ModelInterface from "./modelInterface";
 
 export default class ModelProxy implements ModelInterface {
-  subject: ModelInterface;
+  public subject: ModelInterface;
 
   constructor(model: ModelInterface) {
     this.subject = model;
@@ -28,37 +28,37 @@ export default class ModelProxy implements ModelInterface {
     return this.subject.realismState;
   }
 
-  moveBirdDown() {
+  public moveBirdDown() {
     this.subject.moveBirdDown();
   }
-  moveBirdUp() {
+  public moveBirdUp() {
     this.subject.moveBirdUp();
   }
-  moveMissile(idx: number) {
+  public moveMissile(idx: number) {
     this.subject.moveMissile(idx);
   }
-  moveEnemy(idx: number) {
+  public moveEnemy(idx: number) {
     this.subject.moveEnemy(idx);
   }
-  birdFire() {
+  public birdFire() {
     this.subject.birdFire();
   }
-  toggleBirdState() {
+  public toggleBirdState() {
     this.subject.toggleBirdState();
   }
-  update() {
+  public update() {
     this.subject.update();
   }
 
-  loadGame() {
+  public loadGame() {
     this.subject.loadGame();
   }
 
-  saveGame() {
+  public saveGame() {
     this.subject.saveGame();
   }
 
-  subscribe(observer: Observer) {
+  public subscribe(observer: Observer) {
     this.subject.subscribe(observer);
   }
 }

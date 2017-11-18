@@ -21,8 +21,6 @@ export default class Keyboard {
     [KKEY]: false
   };
 
-  private keyDownHandler = () => {};
-
   constructor(handler: () => void) {
     window.addEventListener(
       "keyup",
@@ -42,39 +40,41 @@ export default class Keyboard {
     this.keyDownHandler = handler;
   }
 
-  isLeftDown() {
+  private keyDownHandler = () => {};
+
+  public isLeftDown() {
     return this.keys[LEFT];
   }
 
-  isRightDown() {
+  public isRightDown() {
     return this.keys[RIGHT];
   }
 
-  isDownDown() {
+  public isDownDown() {
     return this.keys[DOWN];
   }
 
-  isUpDown() {
+  public isUpDown() {
     return this.keys[UP];
   }
 
-  isSpaceDown() {
+  public isSpaceDown() {
     return this.keys[SPACE];
   }
 
-  isShiftDown() {
+  public isShiftDown() {
     return this.keys[SHIFT];
   }
 
-  isControlDown() {
+  public isControlDown() {
     return this.keys[CTRL];
   }
 
-  isLKeyDown() {
+  public isLKeyDown() {
     return this.keys[LKEY];
   }
 
-  isKKeyDown() {
+  public isKKeyDown() {
     return this.keys[KKEY];
   }
 

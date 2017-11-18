@@ -1,14 +1,14 @@
-import Entity from "../Entity";
-import BirdState from "./birdStates";
-import Missile from "../missile";
-import Visitor from "../../../visitor/visitor";
-import SingleShootingState from "./singleShootingState";
-import DoubleShootingState from "./doubleShootingState";
-import SimpleFactory from "../../../factory/simpleFactory";
 import AbstractFactory from "../../../factory/abstractFactory";
+import SimpleFactory from "../../../factory/simpleFactory";
+import Visitor from "../../../visitor/visitor";
+import Entity from "../Entity";
+import Missile from "../missile";
+import BirdState from "./birdStates";
+import DoubleShootingState from "./doubleShootingState";
+import SingleShootingState from "./singleShootingState";
 
 export default class Bird extends Entity {
-  private _state = BirdState.Single;
+  private _shootingState = BirdState.Single;
   private _stateInstance = new SingleShootingState();
   private _missileFactory: AbstractFactory;
 
@@ -18,27 +18,27 @@ export default class Bird extends Entity {
   }
 
   get state() {
-    return this._state;
+    return this._shootingState;
   }
 
-  get missileFactory() {
-    return this._missileFactory;
-  }
-
-  accept(visitor: Visitor) {
+  public accept(visitor: Visitor) {
     visitor.visitBird(this);
   }
 
-  fire(): Array<Missile> {
-    return this._stateInstance.fire(this._missileFactory, this.position[0], this.position[1]);
+  public fire(): Missile[] {
+    return this._stateInstance.fire(
+      this._missileFactory,
+      this.position[0],
+      this.position[1]
+    );
   }
 
-  toggleState() {
-    if (this._state == BirdState.Single) {
-      this._state = BirdState.Double;
+  public toggleState() {
+    if (this._shootingState == BirdState.Single) {
+      this._shootingState = BirdState.Double;
       this._stateInstance = new DoubleShootingState();
     } else {
-      this._state = BirdState.Single;
+      this._shootingState = BirdState.Single;
       this._stateInstance = new SingleShootingState();
     }
   }

@@ -1,14 +1,14 @@
-import AbstractFactory from "./abstractFactory";
-import Missile from "../model/entities/missile";
 import JumpingEnemy from "../model/entities/enemy/jumpingEnemy";
+import Missile from "../model/entities/missile";
 import GravityMissileStrategy from "../strategy/gravityMissileStrategy";
+import AbstractFactory from "./abstractFactory";
 
 export default class RealisticFactory implements AbstractFactory {
-  createMissile(x: number, y: number, angle: number) {
+  public createMissile(x: number, y: number, angle: number) {
     return new Missile(x, y, angle, new GravityMissileStrategy());
   }
 
-  createEnemy(x: number, y: number) {
+  public createEnemy(x: number, y: number) {
     return new JumpingEnemy(x, y);
   }
 }

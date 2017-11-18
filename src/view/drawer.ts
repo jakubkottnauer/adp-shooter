@@ -1,8 +1,8 @@
-import DrawerVisitor from './visitor'
 import Entity from '../model/entities/entity'
+import DrawerVisitor from './visitor'
 
 export default class Drawer {
-  render(ctx: CanvasRenderingContext2D, entity: Entity) {
+  public render(ctx: CanvasRenderingContext2D, entity: Entity) {
     const visitor = new DrawerVisitor();
     entity.accept(visitor)
 

@@ -1,8 +1,8 @@
-import MoveStrategy from "./moveStrategy";
 import Missile from '../model/entities/missile'
+import MoveStrategy from "./moveStrategy";
 
 export default class GravityStrategy implements MoveStrategy {
-  getDirection(missile: Missile, gravity: number) { 
+  public getDirection(missile: Missile, gravity: number) { 
     const [x, y] = missile.position
 
     const time = (Date.now() - missile.timeCreated) / 1000.0

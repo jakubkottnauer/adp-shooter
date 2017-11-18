@@ -1,10 +1,10 @@
+import AbstractFactory from "../../../factory/abstractFactory";
+import Missile from "../missile";
 import Bird from "./bird";
 import BirdState from "./birdState";
-import Missile from "../missile";
-import AbstractFactory from "../../../factory/abstractFactory";
 
 export default class DoubleShootingState implements BirdState {
-  fire(factory: AbstractFactory, x: number, y: number): Array<Missile> {
+  public fire(factory: AbstractFactory, x: number, y: number): Missile[] {
     return [
       factory.createMissile(x, y, 10),
       factory.createMissile(x, y, 90)

@@ -1,11 +1,11 @@
+import AbstractFactory from "../factory/abstractFactory";
+import State from "../gameStates";
 import Bird from "../model/entities/bird/bird";
 import Enemy from "../model/entities/enemy/enemy";
 import Entity from "../model/entities/entity";
-import Subject from "../observer/subject";
-import Missile from "../model/entities/missile";
 import Explosion from "../model/entities/explosion";
-import State from "../gameStates";
-import AbstractFactory from "../factory/abstractFactory";
+import Missile from "../model/entities/missile";
+import Subject from "../observer/subject";
 
 export default class GameState {
   private _bird: Bird;

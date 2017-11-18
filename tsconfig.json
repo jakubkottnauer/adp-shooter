@@ -3,7 +3,7 @@
     "outDir": "./built",
     "target": "es6"
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*.ts"],
   "exclude": [
     "./src/**/*.test.ts"
   ],

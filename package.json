@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "build": "browserify src/index.ts -p [ tsify --noImplicitAny ] > build/index.js && open index.html",
+    "build": "browserify src/index.ts -p [ tsify ] > build/index.js && open index.html",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "lint:fix": "tslint --fix -c tslint.json 'src/**/*.ts'",
-    "test": "jest",
+    "test": "jest --no-cache",
     "test:watch": "jest --watch"
   },
   "jest": {
@@ -12,7 +12,7 @@
       "js"
     ],
     "transform": {
-      "^.+\\.ts$": "<rootDir>/testPreprocessor.js"
+      "^.+\\.ts$": "ts-jest"
     },
     "testMatch": [
       "<rootDir>/src/**/*.test.ts"
@@ -20,12 +20,13 @@
   },
   "dependencies": {
     "tsify": "^3.0.3",
-    "typescript": "^2.5.3"
+    "typescript": "^2.6.1"
   },
   "devDependencies": {
-    "@types/jest": "^21.1.2",
+    "@types/jest": "^21.1.6",
     "jest": "^21.2.1",
     "prettier": "^1.8.2",
+    "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",
     "tslint-config-prettier": "^1.6.0"
   }

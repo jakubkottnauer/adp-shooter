@@ -29,13 +29,19 @@ it("move should change position one point right", () => {
 
 it("shootingState is set to SINGLE by default", () => {
   const bird = new Bird(10, 10, new MockFactory());
-  expect(bird.state).toEqual(BirdState.SINGLE);
+  expect(bird.state).toEqual(BirdState.Single);
 });
 
 it("toggleState() should toggle shooting state", () => {
   const bird = new Bird(10, 10, new MockFactory());
   bird.toggleState()
-  expect(bird.state).toEqual(BirdState.DOUBLE);
+  expect(bird.state).toEqual(BirdState.Double);
   bird.toggleState()
-  expect(bird.state).toEqual(BirdState.SINGLE);
+  expect(bird.state).toEqual(BirdState.Single);
+});
+
+it("fire() should create a missile", () => {
+  const bird = new Bird(10, 10, new MockFactory());
+  const missiles = bird.fire();
+  expect(missiles.length).toEqual(1);
 });

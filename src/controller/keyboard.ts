@@ -78,7 +78,7 @@ export default class Keyboard {
     return this.keys[KKEY];
   }
 
-  private onKeydown(event: KeyboardEvent) {
+  private onKeydown(event: KeyboardEvent): void {
     this.keys[event.keyCode] = true;
     this.keyDownHandler();
   }

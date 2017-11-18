@@ -1,3 +1,4 @@
+import GameCommand from "../commands/gameCommand";
 import AbstractFactory from "../factory/abstractFactory";
 import State from "../gameStates";
 import GameState from "../memento/gameState";
@@ -20,6 +21,7 @@ export default class Model extends Subject implements ModelInterface {
   private _state: State = State.Playing;
   private _score = 0;
   private _factory: AbstractFactory;
+  private _commands = new Array<GameCommand>();
 
   constructor(width: number, height: number, factory: AbstractFactory) {
     super();
@@ -92,19 +94,23 @@ export default class Model extends Subject implements ModelInterface {
 
   public saveGame() {
     const state = new GameState();
+
     state.bird = this.clone(this._bird);
     state.enemies = this._enemies.map(e => this.clone(e));
     state.missiles = this._missiles.map(e => this.clone(e));
     state.explosions = this._explosions.map(e => this.clone(e));
     state.state = this._state;
     state.score = this._score;
-    console.log('SAVING SCORE', state.score)
+
     const m = new Memento(state);
     this._savedGames.push(m);
   }
 
   public loadGame() {
-    if (this._savedGames.length === 0) { return; }
+    if (this._savedGames.length === 0) {
+      return;
+    }
+
     const state = this._savedGames.pop().state;
     this._bird = this.clone(state.bird);
     this._enemies = state.enemies.map(e => this.clone(e));
@@ -148,7 +154,18 @@ export default class Model extends Subject implements ModelInterface {
     this._bird.toggleState();
   }
 
+  public registerCommand(cmd: GameCommand, saveGame: boolean) {
+    this._commands.push(cmd);
+    if (saveGame) { this.saveGame(); }
+  }
+
   public update() {
+    this._commands.forEach(c => {
+      c.execute(this);
+    });
+
+    this._commands = [];
+
     for (let i = this._missiles.length - 1; i >= 0; i--) {
       this.moveMissile(i);
     }

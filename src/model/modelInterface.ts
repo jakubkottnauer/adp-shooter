@@ -1,3 +1,4 @@
+import GameCommand from "../commands/gameCommand";
 import State from "../gameStates";
 import Observer from "../observer/observer";
 import Entity from "./entities/entity";
@@ -21,4 +22,5 @@ export default interface ModelInterface {
   saveGame(): void;
 
   subscribe(observer: Observer): void;
+  registerCommand(cmd: GameCommand, saveGame: boolean): void;
 };

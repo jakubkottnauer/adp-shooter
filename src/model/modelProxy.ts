@@ -1,3 +1,4 @@
+import GameCommand from "../commands/gameCommand";
 import Observer from "../observer/observer";
 import ModelInterface from "./modelInterface";
 
@@ -60,5 +61,9 @@ export default class ModelProxy implements ModelInterface {
 
   public subscribe(observer: Observer) {
     this.subject.subscribe(observer);
+  }
+
+  public registerCommand(cmd: GameCommand, saveGame: boolean) {
+    this.subject.registerCommand(cmd, saveGame);
   }
 }

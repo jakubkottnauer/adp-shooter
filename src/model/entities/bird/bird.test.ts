@@ -12,8 +12,8 @@ class MockStrategy implements MoveStrategy {
 }
 
 class MockFactory implements AbstractFactory {
-  public createMissile(x: number, y: number, angle: number) {
-    return new Missile(x, y, angle, new MockStrategy());
+  public createMissile(x: number, y: number, angle: number, force: number) {
+    return new Missile(x, y, angle, force, new MockStrategy());
   }
 
   public createEnemy(x: number, y: number) {

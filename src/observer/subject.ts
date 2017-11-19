@@ -7,7 +7,6 @@ export default abstract class Subject {
   }
 
   public unsubscribe() {
-    // TODO: implement removal from list!
   }
 
   public notifyObservers() {

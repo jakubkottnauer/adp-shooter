@@ -10,6 +10,7 @@ import Explosion from "../model/entities/explosion";
 import Missile from "../model/entities/missile";
 import Subject from "../observer/subject";
 import ModelInterface from "./modelInterface";
+import RealisticFactory from "../factory/realisticFactory";
 
 export default class Model extends Subject implements ModelInterface {
   private _bird: Bird;
@@ -27,7 +28,7 @@ export default class Model extends Subject implements ModelInterface {
     super();
     this._worldDimensions = [width, height];
     this._factory = factory;
-    this._bird = new Bird(20, height / 2, this._factory);
+    this._bird = new Bird(20, height / 2);
     this.generateEnemies(2, 5);
   }
 
@@ -87,9 +88,7 @@ export default class Model extends Subject implements ModelInterface {
   }
 
   get realismState() {
-    return true;
-    // TODO: fix
-    //return GAME_MODE === Mode.Realistic;
+    return this._factory instanceof RealisticFactory;
   }
 
   public saveGame() {
@@ -140,13 +139,12 @@ export default class Model extends Subject implements ModelInterface {
     this._enemies[idx].move();
   }
 
-  // TODO: birdFire dostane missileFactory jako param
   public birdFire() {
     if (this._missiles.length >= 3) {
       return;
     }
 
-    const newMissiles = this._bird.fire();
+    const newMissiles = this._bird.fire(this._factory);
     this._missiles = [...this._missiles, ...newMissiles];
   }
 
@@ -156,7 +154,9 @@ export default class Model extends Subject implements ModelInterface {
 
   public registerCommand(cmd: GameCommand, saveGame: boolean) {
     this._commands.push(cmd);
-    if (saveGame) { this.saveGame(); }
+    if (saveGame) {
+      this.saveGame();
+    }
   }
 
   public update() {

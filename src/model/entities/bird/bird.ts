@@ -10,11 +10,9 @@ import SingleShootingState from "./singleShootingState";
 export default class Bird extends Entity {
   private _shootingState = BirdState.Single;
   private _stateInstance = new SingleShootingState();
-  private _missileFactory: AbstractFactory;
 
-  constructor(x: number, y: number, factory: AbstractFactory) {
+  constructor(x: number, y: number) {
     super(x, y, 60, 60);
-    this._missileFactory = factory;
   }
 
   get state() {
@@ -25,9 +23,9 @@ export default class Bird extends Entity {
     visitor.visitBird(this);
   }
 
-  public fire(): Missile[] {
+  public fire(factory: AbstractFactory): Missile[] {
     return this._stateInstance.fire(
-      this._missileFactory,
+      factory,
       this.position[0],
       this.position[1]
     );

@@ -1,5 +1,6 @@
 import Visitable from "../../visitor/visitable";
 import Visitor from "../../visitor/visitor";
+import config from "../../config"
 
 export default abstract class Entity implements Visitable {
   private _position: [number, number];
@@ -20,8 +21,8 @@ export default abstract class Entity implements Visitable {
 
   public move(dx: number, dy: number): boolean {
     this._position = [(this.position[0] += dx), (this.position[1] += dy)];
-    // TODO: Fix!
-    if (!this.isWithinWorld(640, 480)) {
+
+    if (!this.isWithinWorld(config.worldWidth, config.worldHeight)) {
       this._position = [(this.position[0] -= dx), (this.position[1] -= dy)];
       return false;
     }

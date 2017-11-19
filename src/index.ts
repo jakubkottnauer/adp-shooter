@@ -5,20 +5,17 @@ import SimpleFactory from "./factory/simpleFactory";
 import Model from "./model/model";
 import ModelProxy from "./model/modelProxy";
 import View from "./view/game";
+import config from "./config"
 
 enum Mode {
   Simple,
   Realistic
 }
 
-const GAME_MODE: Mode = Mode.Realistic;
-
-
-const worldWidth = 640;
-const worldHeight = 480;
+const GAME_MODE: Mode = Mode.Simple;
 
 const factory = GAME_MODE === 0 ? new SimpleFactory() : new RealisticFactory()
-const model = new ModelProxy(new Model(worldWidth, worldHeight, factory));
+const model = new ModelProxy(new Model(config.worldWidth, config.worldHeight, factory));
 const view = new View(model);
 const game = new GameController(model);
 model.subscribe(view);

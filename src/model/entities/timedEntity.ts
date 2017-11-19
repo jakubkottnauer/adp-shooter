@@ -19,6 +19,6 @@ export default abstract class TimedEntity extends Entity {
   }
 
   public shouldBeDeleted(deathTime: number) {
-    return this._timeCreated + deathTime > Date.now();
+    return this._timeCreated + deathTime < Date.now();
   }
 }

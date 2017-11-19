@@ -1,10 +1,9 @@
 import Visitor from "../../visitor/visitor";
-import Entity from "./Entity";
+import TimedEntity from "./timedEntity";
 
-export default class Explosion extends Entity {
+export default class Explosion extends TimedEntity {
   constructor(x: number, y: number) {
     super(x, y, 50, 50);
-    //TODO: do not use timeout
   }
 
   public accept(visitor: Visitor) {

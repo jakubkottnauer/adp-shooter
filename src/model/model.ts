@@ -174,6 +174,12 @@ export default class Model extends Subject implements ModelInterface {
       this.moveEnemy(i);
     }
 
+    for (let i = this._explosions.length - 1; i >= 0; i--) {
+      if (this._explosions[i].shouldBeDeleted(500)) {
+        this._explosions.splice(i, 1);
+      }
+    }
+
     for (let j = this._missiles.length - 1; j >= 0; j--) {
       for (let i = this._enemies.length - 1; i >= 0; i--) {
         if (this._missiles[j].collidesWith(this._enemies[i])) {
@@ -182,9 +188,6 @@ export default class Model extends Subject implements ModelInterface {
           this._explosions.push(exp);
           this._score++;
 
-          setTimeout(() => {
-            this._explosions = new Array<Explosion>();
-          }, 500);
           this._enemies.splice(i, 1);
           this._missiles.splice(j, 1);
           return;

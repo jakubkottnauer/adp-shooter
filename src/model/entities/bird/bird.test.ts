@@ -22,18 +22,18 @@ class MockFactory implements AbstractFactory {
 }
 
 it("move should change position one point right", () => {
-  const bird = new Bird(10, 10, new MockFactory());
+  const bird = new Bird(10, 10);
   bird.move(1, 0);
   expect(bird.position).toEqual([11, 10]);
 });
 
 it("shootingState is set to SINGLE by default", () => {
-  const bird = new Bird(10, 10, new MockFactory());
+  const bird = new Bird(10, 10);
   expect(bird.state).toEqual(BirdState.Single);
 });
 
 it("toggleState() should toggle shooting state", () => {
-  const bird = new Bird(10, 10, new MockFactory());
+  const bird = new Bird(10, 10);
   bird.toggleState()
   expect(bird.state).toEqual(BirdState.Double);
   bird.toggleState()
@@ -41,7 +41,7 @@ it("toggleState() should toggle shooting state", () => {
 });
 
 it("fire() should create a missile", () => {
-  const bird = new Bird(10, 10, new MockFactory());
-  const missiles = bird.fire();
+  const bird = new Bird(10, 10);
+  const missiles = bird.fire(new MockFactory());
   expect(missiles.length).toEqual(1);
 });

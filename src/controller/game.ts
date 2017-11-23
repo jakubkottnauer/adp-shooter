@@ -10,7 +10,7 @@ import GameView from "../view/game";
 import Keyboard from "./keyboard";
 
 export default class GameController {
-  private keyboard = new Keyboard(() => this.update());
+  private keyboard = new Keyboard(() => this.catch());
   private model: ModelInterface;
 
   constructor(model: ModelInterface) {
@@ -21,12 +21,12 @@ export default class GameController {
     this.model.registerCommand(cmd, saveGame);
   }
 
-  public update() {
-    if (this.keyboard.isUpDown()) { this.registerCommand(new MoveBirdUpCommand(this.model)); }
-    if (this.keyboard.isDownDown()) { this.registerCommand(new MoveBirdDownCommand(this.model)); }
-    if (this.keyboard.isSpaceDown()) { this.registerCommand(new BirdFireCommand(this.model)); }
-    if (this.keyboard.isShiftDown()) { this.registerCommand(new ToggleBirdStateCommand(this.model)); }
-    if (this.keyboard.isLKeyDown()) { this.registerCommand(new LoadGameCommand(this.model), false); }
-    if (this.keyboard.isKKeyDown()) { this.registerCommand(new SaveGameCommand(this.model), false); }
+  public catch() {
+    if (this.keyboard.isUpDown()) this.registerCommand(new MoveBirdUpCommand(this.model));
+    if (this.keyboard.isDownDown()) this.registerCommand(new MoveBirdDownCommand(this.model));
+    if (this.keyboard.isSpaceDown()) this.registerCommand(new BirdFireCommand(this.model));
+    if (this.keyboard.isShiftDown()) this.registerCommand(new ToggleBirdStateCommand(this.model));
+    if (this.keyboard.isLKeyDown()) this.registerCommand(new LoadGameCommand(this.model), false);
+    if (this.keyboard.isKKeyDown()) this.registerCommand(new SaveGameCommand(this.model), false);
   }
 }

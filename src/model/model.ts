@@ -1,5 +1,6 @@
 import GameCommand from "../commands/gameCommand";
 import AbstractFactory from "../factory/abstractFactory";
+import RealisticFactory from "../factory/realisticFactory";
 import State from "../gameStates";
 import GameState from "../memento/gameState";
 import Memento from "../memento/memento";
@@ -10,7 +11,6 @@ import Explosion from "../model/entities/explosion";
 import Missile from "../model/entities/missile";
 import Subject from "../observer/subject";
 import ModelInterface from "./modelInterface";
-import RealisticFactory from "../factory/realisticFactory";
 
 export default class Model extends Subject implements ModelInterface {
   private _bird: Bird;
@@ -21,6 +21,8 @@ export default class Model extends Subject implements ModelInterface {
   private _savedGames = new Array<Memento>();
   private _state: State = State.Playing;
   private _score = 0;
+  private _gravity = 1;
+  private _missileForce = 5;
   private _factory: AbstractFactory;
   private _commands = new Array<GameCommand>();
 
@@ -144,7 +146,7 @@ export default class Model extends Subject implements ModelInterface {
       return;
     }
 
-    const newMissiles = this._bird.fire(this._factory);
+    const newMissiles = this._bird.fire(this._factory, this._missileForce, this._gravity);
     this._missiles = [...this._missiles, ...newMissiles];
   }
 

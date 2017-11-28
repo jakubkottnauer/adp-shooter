@@ -23,11 +23,13 @@ export default class Bird extends Entity {
     visitor.visitBird(this);
   }
 
-  public fire(factory: AbstractFactory): Missile[] {
+  public fire(factory: AbstractFactory, force: number, gravity: number): Missile[] {
     return this._stateInstance.fire(
       factory,
       this.position[0],
-      this.position[1]
+      this.position[1],
+      force,
+      gravity
     );
   }
 

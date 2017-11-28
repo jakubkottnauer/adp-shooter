@@ -4,8 +4,8 @@ import GravityMissileStrategy from "../strategy/gravityMissileStrategy";
 import AbstractFactory from "./abstractFactory";
 
 export default class RealisticFactory implements AbstractFactory {
-  public createMissile(x: number, y: number, angle: number, force: number) {
-    return new Missile(x, y, angle, force, new GravityMissileStrategy());
+  public createMissile(x: number, y: number, angle: number, force: number, gravity: number) {
+    return new Missile(x, y, angle, force, gravity, new GravityMissileStrategy());
   }
 
   public createEnemy(x: number, y: number) {

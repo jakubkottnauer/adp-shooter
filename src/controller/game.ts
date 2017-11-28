@@ -22,11 +22,11 @@ export default class GameController {
   }
 
   public catch() {
-    if (this.keyboard.isUpDown()) this.registerCommand(new MoveBirdUpCommand(this.model));
-    if (this.keyboard.isDownDown()) this.registerCommand(new MoveBirdDownCommand(this.model));
-    if (this.keyboard.isSpaceDown()) this.registerCommand(new BirdFireCommand(this.model));
-    if (this.keyboard.isShiftDown()) this.registerCommand(new ToggleBirdStateCommand(this.model));
-    if (this.keyboard.isLKeyDown()) this.registerCommand(new LoadGameCommand(this.model), false);
-    if (this.keyboard.isKKeyDown()) this.registerCommand(new SaveGameCommand(this.model), false);
+    if (this.keyboard.isUpDown()) { this.registerCommand(new MoveBirdUpCommand(this.model)); }
+    if (this.keyboard.isDownDown()) { this.registerCommand(new MoveBirdDownCommand(this.model)); }
+    if (this.keyboard.isSpaceDown()) { this.registerCommand(new BirdFireCommand(this.model)); }
+    if (this.keyboard.isShiftDown()) { this.registerCommand(new ToggleBirdStateCommand(this.model)); }
+    if (this.keyboard.isLKeyDown()) { this.registerCommand(new LoadGameCommand(this.model), false); }
+    if (this.keyboard.isKKeyDown()) { this.registerCommand(new SaveGameCommand(this.model), false); }
   }
 }

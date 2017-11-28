@@ -1,6 +1,6 @@
+import config from "../../config"
 import Visitable from "../../visitor/visitable";
 import Visitor from "../../visitor/visitor";
-import config from "../../config"
 
 export default abstract class Entity implements Visitable {
   private _position: [number, number];

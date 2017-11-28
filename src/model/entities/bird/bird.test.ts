@@ -34,9 +34,9 @@ it("shootingState is set to SINGLE by default", () => {
 
 it("toggleState() should toggle shooting state", () => {
   const bird = new Bird(10, 10);
-  bird.toggleState()
+  bird.toggleState();
   expect(bird.state).toEqual(BirdState.Double);
-  bird.toggleState()
+  bird.toggleState();
   expect(bird.state).toEqual(BirdState.Single);
 });
 

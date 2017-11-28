@@ -3,5 +3,5 @@ import Missile from "../missile";
 import Bird from "./bird";
 
 export default interface BirdState {
-  fire(factory: AbstractFactory, x: number, y: number): Missile[];
+  fire(factory: AbstractFactory, x: number, y: number, force: number, gravity: number): Missile[];
 };
